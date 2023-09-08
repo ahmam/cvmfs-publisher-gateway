@@ -1,0 +1,17 @@
+---
+# handlers file for galaxyproject.cvmfs
+
+- name: Reload autofs
+  ansible.builtin.service:
+    name: autofs
+    state: reloaded
+
+- name: Restart apache
+  ansible.builtin.service:
+    name: "{{ cvmfs_apache_service_name }}"
+    state: restarted
+
+- name: Reload apache
+  ansible.builtin.service:
+    name: "{{ cvmfs_apache_service_name }}"
+    state: reloaded
