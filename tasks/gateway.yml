@@ -36,12 +36,12 @@
 - name: Include firewall tasks
   ansible.builtin.include_tasks: firewall.yml
   vars:
-    _cvmfs_http_ports: "{{ cvmfs_stratum0_http_ports }}"
+    _cvmfs_http_ports: "{{ cvmfs_gateway_http_ports }}"
   when: cvmfs_manage_firewall
 
 - name: Create repositories
   ansible.builtin.command: |
-    /usr/bin/cvmfs_server mkfs {{ cvmfs_config_apache_flag }} -o {{ item.owner | default('root') }} -f {{ cvmfs_union_fs }} {{ item.repository }}
+    /usr/bin/cvmfs_server mkfs -w {{ http://gateway.cern.ch/cvmfs/test.cern.ch }} -u gw,http://{{ gateway }}/cvmfs/test.cern.ch, -o {{ item.owner | default('root') }} {{ item.repository }}
   args:
     creates: /srv/cvmfs/{{ item.repository }}
   with_items: "{{ cvmfs_repositories }}"

@@ -2,13 +2,13 @@
 cvmfs_apache_service_name: apache2
 cvmfs_apache_conf_file: /etc/apache2/apache2.conf
 
-
 cvmfs_packages:
   gateway:
     - apache2
     - cvmfs-server
     - cvmfs-config-default
     - cvmfs
+    - cvmfs-gateway
   publishers:
     - cvmfs-server
     - cvmfs

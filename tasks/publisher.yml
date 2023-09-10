@@ -1,0 +1,24 @@
+---
+- name: Include initial OS-specific tasks
+  ansible.builtin.include_tasks: init_{{ ansible_os_family | lower }}.yml
+  vars:
+    _cvmfs_role: publishers
+    _cvmfs_upgrade: "{{ cvmfs_upgrade_server }}"
+
+- name: Include key setup tasks
+  ansible.builtin.include_tasks: keys.yml
+
+#export S0_IP='<STRATUM0_IP>'
+#sudo cvmfs_server mkfs -w http://$S0_IP/cvmfs/repo.organization.tld \
+#                       -u gw,/srv/cvmfs/repo.organization.tld/data/txn,http://$S0_IP:4929/api/v1 \
+#                       -k /path/to/keys/dir -o $USER repo.organization.tld
+
+- name:  Create the repository available for writing publisher
+  ansible.builtin.command: >-
+    /usr/bin/cvmfs_server mkfs -w {{ item.owner | default('root') }}
+      http://{{ item.stratum0 }}/cvmfs/{{ item.repository }}
+      {{ item.key_dir | default('/etc/cvmfs/keys') }}/{{ item.repository }}.pub
+  args:
+    creates: /etc/cvmfs/repositories.d/{{ item.repository }}
+  loop: "{{ cvmfs_repositories }}"
+  register: __cvmfs_add_repository_publisher

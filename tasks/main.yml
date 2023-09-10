@@ -4,11 +4,10 @@
 - name: Set OS-specific variables
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: Include Stratum1 Tasks
-  ansible.builtin.include_tasks: stratum1.yml
-  when: "'cvmfsstratum1servers' in group_names or cvmfs_role == 'publishers'"
+- name: Include publisher Tasks
+  ansible.builtin.include_tasks: publishers.yml
+  when: "'cvmfs_role == 'publisher'"
 
-- name: Include Stratum0 Tasks
-  ansible.builtin.include_tasks: stratum0.yml
-  when: "'cvmfsstratum0servers' in group_names or cvmfs_role == 'getway'"
-
+- name: Include gateway Tasks
+  ansible.builtin.include_tasks: gateway.yml
+  when: "'cvmfs_role == 'gateway'"
