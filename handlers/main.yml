@@ -1,10 +1,5 @@
 ---
-# handlers file for galaxyproject.cvmfs
-
-- name: Reload autofs
-  ansible.builtin.service:
-    name: autofs
-    state: reloaded
+# handlers file for cvmfs.publisher.gateway
 
 - name: Restart apache
   ansible.builtin.service:

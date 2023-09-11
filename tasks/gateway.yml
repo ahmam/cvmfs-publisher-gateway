@@ -16,19 +16,8 @@
 - name: Include key setup tasks
   ansible.builtin.include_tasks: keys.yml
 
-- name: Install CernVM-FS private keys
-  ansible.builtin.copy:
-    content: "{{ item.key }}"
-    dest: "{{ item.path }}"
-    owner: "{{ item.owner | default('root') }}"
-    group: root
-    mode: "0400"
-  with_items: "{{ cvmfs_private_keys }}"
-  loop_control:
-    label: "{{ item.path }}"
-
-- name: Include stratumN tasks
-  ansible.builtin.include_tasks: stratumN.yml
+- name: Include filesystem tasks
+  ansible.builtin.include_tasks: filesystem.yml
 
 - name: Include Apache tasks
   ansible.builtin.include_tasks: apache.yml
@@ -39,9 +28,15 @@
     _cvmfs_http_ports: "{{ cvmfs_gateway_http_ports }}"
   when: cvmfs_manage_firewall
 
+- name: Include firewall tasks
+  ansible.builtin.include_tasks: firewall.yml
+  vars:
+    _cvmfs_gateway_ports: "{{ cvmfs_gateway_ports }}"
+  when: cvmfs_manage_firewall
+
 - name: Create repositories
   ansible.builtin.command: |
-    /usr/bin/cvmfs_server mkfs -w {{ http://gateway.cern.ch/cvmfs/test.cern.ch }} -u gw,http://{{ gateway }}/cvmfs/test.cern.ch, -o {{ item.owner | default('root') }} {{ item.repository }}
+    /usr/bin/cvmfs_server mkfs {{ cvmfs_config_apache_flag }} -o {{ item.owner | default('root') }} -f {{ cvmfs_union_fs }} {{ item.repository }}
   args:
     creates: /srv/cvmfs/{{ item.repository }}
   with_items: "{{ cvmfs_repositories }}"
@@ -67,4 +62,23 @@
   vars:
     _cvmfs_repo_option_key: client
 
+- name: Create the API repos config
+  ansible.builtin.template:
+    src: repos.json.j2
+    dest: /etc/cvmfs/gateway/repo.json
+    owner: "{{ item.owner | default('root') }}"
+    group: root
+    mode: "0644"
+  loop: "{{ cvmfs_repositories }}"
 
+- name: Create the API key filesystem
+  ansible.builtin.template:
+    src: api.key.gw.j2
+    dest: "/etc/cvmfs/keys/'{{ item.repository }}'.gw"
+    owner: "{{ item.owner | default('root') }}"
+    group: root
+    mode: "0600"
+  loop: '{{ cvmfs_repositories }}'
+
+- name: Include gateway service tasks
+  ansible.builtin.include_tasks: gateway-service.yml

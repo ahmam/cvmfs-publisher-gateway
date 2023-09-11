@@ -3,32 +3,9 @@
 ##
 
 {
-    "version": 2,
-    "repos" : [
-        {
-            "domain" : "repo.organization.tld",
-            "keys" : [
-                {
-                    "id": "keyid1",
-                    "path": "/"
-                },
-                {
-                    "id": "keyid2",
-                    "path": "/restricted/to/subdir"
-                }
-            ]
-        }
-    ],
-    "keys" : [
-        {
-            "type" : "plain_text",
-            "id" : "keyid1",
-            "secret" : "SOME_SECRET"
-        },
-        {
-            "type" : "plain_text",
-            "id" : "keyid2",
-            "secret" : "SOME_OTHER_SECRET"
-        }
-    ]
+  "version": 2,
+
+  "repos": [
+    "{{ item.repository }}"
+  ]
 }
