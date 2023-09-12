@@ -1,10 +1,10 @@
 ---
 galaxy_info:
   role_name: cvmfs-publisher-gateway
-  namespace: galaxyproject
+  namespace: mila-iqia
   author: Nathan Coraor
-  description: Install and configure CernVM-FS (CVMFS)
-  company: Galaxy Project
+  description: Install and configure CernVM-FS publisher and gateway (CVMFS)
+  company: MILA Project
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
