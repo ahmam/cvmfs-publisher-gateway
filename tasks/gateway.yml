@@ -65,12 +65,8 @@
 - name: Create the API repos config
   ansible.builtin.template:
     src: repos.json.j2
-    dest: /etc/cvmfs/gateway/repo.json
-    remote_src: yes
-    owner: "{{ item.owner | default('root') }}"
-    group: root
+    dest: "/etc/cvmfs/gateway/repo.json"
     mode: "0644"
-    force: yes
   loop: "{{ cvmfs_repositories_api }}"
 
 - name: Create the API key filesystem
@@ -78,7 +74,7 @@
     src: api.key.gw.j2
     dest: "/etc/cvmfs/keys/'{{ item.repository }}'.gw"
     remote_src: yes
-    owner: "{{ item.owner | default('root') }}"
+    owner: root
     group: root
     mode: "0600"
     force: yes
