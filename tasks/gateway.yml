@@ -69,7 +69,7 @@
     owner: "{{ item.owner | default('root') }}"
     group: root
     mode: "0644"
-  loop: "{{ cvmfs_repositories }}"
+  loop: "{{ cvmfs_repositories_api }}"
 
 - name: Create the API key filesystem
   ansible.builtin.template:
@@ -78,7 +78,7 @@
     owner: "{{ item.owner | default('root') }}"
     group: root
     mode: "0600"
-  loop: '{{ cvmfs_repositories }}'
+  loop: '{{ cvmfs_repositories_api }}'
 
 - name: Include gateway service tasks
   ansible.builtin.include_tasks: gateway-service.yml

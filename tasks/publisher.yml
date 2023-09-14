@@ -23,7 +23,7 @@
     owner: "{{ item.owner | default('root') }}"
     group: root
     mode: "0644"
-  loop: "{{ cvmfs_repositories }}"
+  loop: "{{ cvmfs_repositories_api }}"
 
 - name: Install CernVM-FS keys
   ansible.builtin.copy:
