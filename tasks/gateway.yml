@@ -71,13 +71,9 @@
 
 - name: Create the API key filesystem
   ansible.builtin.template:
-    src: api.key.gw.j2
+    src: api-key.gw.j2
     dest: "/etc/cvmfs/keys/'{{ item.repository }}'.gw"
-    remote_src: yes
-    owner: root
-    group: root
     mode: "0600"
-    force: yes
   loop: '{{ cvmfs_repositories_api }}'
 
 - name: Include gateway service tasks
