@@ -72,7 +72,7 @@
 - name: Create the API key filesystem
   ansible.builtin.template:
     src: api-key.gw.j2
-    dest: "/etc/cvmfs/keys/'{{ item.repository }}'.gw"
+    dest: /etc/cvmfs/keys/'{{ item.repository }}'.gw
     mode: "0600"
   loop: '{{ cvmfs_repositories_api }}'
 
