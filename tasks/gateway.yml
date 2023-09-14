@@ -66,6 +66,7 @@
   ansible.builtin.template:
     src: repos.json.j2
     dest: /etc/cvmfs/gateway/repo.json
+    remote_src: yes
     owner: "{{ item.owner | default('root') }}"
     group: root
     mode: "0644"
@@ -76,6 +77,7 @@
   ansible.builtin.template:
     src: api.key.gw.j2
     dest: "/etc/cvmfs/keys/'{{ item.repository }}'.gw"
+    remote_src: yes
     owner: "{{ item.owner | default('root') }}"
     group: root
     mode: "0600"
