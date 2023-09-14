@@ -5,6 +5,9 @@
     _cvmfs_role: publishers
     _cvmfs_upgrade: "{{ cvmfs_upgrade_server }}"
 
+- name: Include Apache tasks
+  ansible.builtin.include_tasks: apache.yml
+
 - name: Copy certificate key on publisher 
   ansible.builtin.copy:
     content: "{{ item.crt }}"

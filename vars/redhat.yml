@@ -10,5 +10,6 @@ cvmfs_packages:
     - cvmfs
     - cvmfs-gateway
   publishers:
+    - httpd
     - cvmfs-server
     - cvmfs
