@@ -64,7 +64,7 @@
 
 - name: Create the API repos config
   ansible.builtin.template:
-    src: repos.json.j2
+    src: repo.json.j2
     dest: "/etc/cvmfs/gateway/repo.json"
     mode: "0644"
   loop: "{{ cvmfs_repositories_api }}"
