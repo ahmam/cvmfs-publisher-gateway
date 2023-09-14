@@ -7,18 +7,18 @@
 
 - name: Copy certificate key on publisher 
   ansible.builtin.copy:
-    content: "{{ item.cert }}"
+    content: "{{ item.crt }}"
     dest: "{{ item.path | default('/tmp/keys') }}"
     owner: "{{ item.owner | default('root') }}"
     group: root
     mode: "0400"
-  with_items: "{{ cvmfs_private_certs }}"
+  with_items: "{{ cvmfs_certs }}"
   loop_control:
     label: "{{ item.path }}"
 
 - name: Create the API key filesystem
   ansible.builtin.template:
-    src: api.key.gw.j2
+    src: api-key.gw.j2
     dest: "{{ item.key_dir | default('/tmp/keys') }}/{{ item.repository }}.gw"
     owner: "{{ item.owner | default('root') }}"
     group: root
